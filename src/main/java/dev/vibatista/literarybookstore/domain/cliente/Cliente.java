@@ -2,13 +2,11 @@ package dev.vibatista.literarybookstore.domain.cliente;
 
 import dev.vibatista.literarybookstore.domain.livro.Livro;
 import dev.vibatista.literarybookstore.domain.pedido.Pedido;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,9 +35,16 @@ public class Cliente {
 
     private LocalDate dataRegistro;
 
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pedido> pedidoList;
 
-    private List<Livro> listaDesejos;
+    @ManyToMany
+    @JoinTable(
+            name = "cliente_livro",
+            joinColumns = @JoinColumn(name = "cliente_id"),
+            inverseJoinColumns = @JoinColumn(name = "livro_id")
+    )
+    private List<Livro> listaDesejos = new ArrayList<>();
 
 
 }

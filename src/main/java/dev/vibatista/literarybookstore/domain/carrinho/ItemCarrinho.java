@@ -1,10 +1,7 @@
 package dev.vibatista.literarybookstore.domain.carrinho;
 
 import dev.vibatista.literarybookstore.domain.livro.Livro;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.UUID;
@@ -22,8 +19,12 @@ public class ItemCarrinho {
     @GeneratedValue(generator = "UUID")
     private UUID id;
 
+    @ManyToOne
+    @JoinColumn(name = "carrinho_id", nullable = false)
     private Carrinho carrinho;
 
+    @ManyToOne
+    @JoinColumn(name = "livro_id", nullable = false)
     private Livro livro;
 
     private Integer quantidade;

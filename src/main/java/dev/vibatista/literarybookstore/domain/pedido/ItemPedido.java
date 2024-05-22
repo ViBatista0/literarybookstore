@@ -1,10 +1,7 @@
 package dev.vibatista.literarybookstore.domain.pedido;
 
 import dev.vibatista.literarybookstore.domain.livro.Livro;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -23,9 +20,12 @@ public class ItemPedido {
     @GeneratedValue(generator = "UUID")
     private UUID id;
 
-
+    @ManyToOne
+    @JoinColumn(name = "pedido_id", nullable = false)
     private Pedido pedido;
 
+    @ManyToOne
+    @JoinColumn(name = "livro_id", nullable = false)
     private Livro livro;
 
     private Integer quantidade;

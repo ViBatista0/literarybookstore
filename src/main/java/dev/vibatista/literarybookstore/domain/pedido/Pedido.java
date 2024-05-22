@@ -22,13 +22,17 @@ public class Pedido {
     @GeneratedValue(generator = "UUID")
     private UUID id;
 
-    private Cliente clienteId;
+    @ManyToOne
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private Cliente cliente;
 
     private LocalDateTime dataPedido;
 
     @Enumerated(EnumType.STRING)
     private StatusPedido statusPedido;
 
+    @OneToMany
+    @JoinColumn(name = "itens_pedido_id")
     private List<ItemPedido> itensPedido;
 
     private BigDecimal valorTotal;
