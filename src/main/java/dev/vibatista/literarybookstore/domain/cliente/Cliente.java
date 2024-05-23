@@ -4,23 +4,26 @@ import dev.vibatista.literarybookstore.domain.livro.Livro;
 import dev.vibatista.literarybookstore.domain.pedido.Pedido;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Entity
+@Entity(name = "clientes")
+@Table(name = "clientes")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
-@Table(name = "cliente")
 public class Cliente {
 
     @Id
     @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     private String nome;

@@ -3,6 +3,7 @@ package dev.vibatista.literarybookstore.domain.pedido;
 import dev.vibatista.literarybookstore.domain.cliente.Cliente;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -20,6 +21,8 @@ public class Pedido {
 
     @Id
     @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
     @ManyToOne
@@ -31,8 +34,7 @@ public class Pedido {
     @Enumerated(EnumType.STRING)
     private StatusPedido statusPedido;
 
-    @OneToMany
-    @JoinColumn(name = "itens_pedido_id")
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemPedido> itensPedido;
 
     private BigDecimal valorTotal;
