@@ -1,10 +1,11 @@
-package dev.vibatista.literarybookstore.domain.carrinho;
+package dev.vibatista.literarybookstore.domains.pedido;
 
-import dev.vibatista.literarybookstore.domain.livro.Livro;
+import dev.vibatista.literarybookstore.domains.livro.Livro;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
@@ -13,8 +14,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
-@Table(name = "item_carrinho")
-public class ItemCarrinho {
+@Table(name = "item_pedido")
+public class ItemPedido {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -23,13 +24,17 @@ public class ItemCarrinho {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "carrinho_id", nullable = false)
-    private Carrinho carrinho;
+    @JoinColumn(name = "pedido_id", nullable = false)
+    private Pedido pedido;
 
     @ManyToOne
     @JoinColumn(name = "livro_id", nullable = false)
     private Livro livro;
 
     private Integer quantidade;
+
+    private BigDecimal precoUnitario;
+
+    private BigDecimal subtotal;
 
 }

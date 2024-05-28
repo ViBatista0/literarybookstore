@@ -1,7 +1,7 @@
-package dev.vibatista.literarybookstore.domain.cliente;
+package dev.vibatista.literarybookstore.domains.cliente;
 
-import dev.vibatista.literarybookstore.domain.livro.Livro;
-import dev.vibatista.literarybookstore.domain.pedido.Pedido;
+import dev.vibatista.literarybookstore.domains.livro.Livro;
+import dev.vibatista.literarybookstore.domains.pedido.Pedido;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;

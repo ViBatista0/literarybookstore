@@ -1,4 +1,4 @@
-package dev.vibatista.literarybookstore.domain.livro;
+package dev.vibatista.literarybookstore.domains.livro;
 
 import jakarta.persistence.*;
 import lombok.*;
