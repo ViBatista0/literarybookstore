@@ -5,9 +5,14 @@ import dev.vibatista.literarybookstore.domains.pedido.Pedido;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.servlet.handler.UserRoleAuthorizationInterceptor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,7 +23,11 @@ import java.util.UUID;
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
-public class Cliente {
+/*
+ Para classes que representam um user no bd, temos que implementar a interface UserDetails, que possui vários métodos
+ de utilidade para autenticação.
+ */
+public class Cliente implements UserDetails {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -28,9 +37,13 @@ public class Cliente {
 
     private String nome;
 
+    private String login;
+
     private String email;
 
     private String senha;
+
+    private ClienteRoles roles;
 
     private String endereco;
 
@@ -49,5 +62,46 @@ public class Cliente {
     )
     private List<Livro> listaDesejos = new ArrayList<>();
 
+    /*
+     *   Vai pegar a hierarquia do usuário, com base na role que criamos no enum ClientesRoles.
+     *   Se for ADMIN, retorna as permissões do ROLE_USER (nativo), e do ROLE_ADMIN, ou seja, permissão máxima.
+     *   Caso o oposto, é um usuário normal, com permissões normais.
+     */
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (this.roles == ClienteRoles.ADMIN)
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        else
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
 
+    @Override
+    public String getPassword() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
