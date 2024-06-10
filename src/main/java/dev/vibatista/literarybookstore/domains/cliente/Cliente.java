@@ -62,6 +62,12 @@ public class Cliente implements UserDetails {
     )
     private List<Livro> listaDesejos = new ArrayList<>();
 
+    public Cliente(String email, String password, ClienteRoles role){
+        this.email = email;
+        this.senha = password;
+        this.roles = role;
+    }
+
     /*
      *   Vai pegar a hierarquia do usuário, com base na role que criamos no enum ClientesRoles.
      *   Se for ADMIN, retorna as permissões do ROLE_USER (nativo), e do ROLE_ADMIN, ou seja, permissão máxima.
@@ -77,12 +83,12 @@ public class Cliente implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return senha;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return email;
     }
 
     @Override

@@ -16,7 +16,9 @@ public class AuthorizationService implements UserDetailsService {
     @Autowired
     private ClienteRepository repository;
 
-    // Carrega o método do nosso repository, e vai buscar o Cliente pelo email (username)
+    /* Carrega o método do nosso repository, e vai buscar o Cliente pelo email (username), só com isso o Spring
+     * já vain conseguir consultar o email do cliente na tabela.
+     * */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return repository.findByEmail(username);
