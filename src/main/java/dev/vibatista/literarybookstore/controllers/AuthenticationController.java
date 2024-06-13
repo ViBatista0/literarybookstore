@@ -1,11 +1,11 @@
 package dev.vibatista.literarybookstore.controllers;
 
-import dev.vibatista.literarybookstore.domains.cliente.AuthenticationDTO;
-import dev.vibatista.literarybookstore.domains.cliente.Cliente;
-import dev.vibatista.literarybookstore.domains.cliente.LoginResponseDTO;
-import dev.vibatista.literarybookstore.domains.cliente.RegisterDTO;
+import dev.vibatista.literarybookstore.domain.models.cliente.AuthenticationDTO;
+import dev.vibatista.literarybookstore.domain.models.cliente.Cliente;
+import dev.vibatista.literarybookstore.domain.models.cliente.LoginResponseDTO;
+import dev.vibatista.literarybookstore.domain.models.cliente.RegisterDTO;
 import dev.vibatista.literarybookstore.infra.security.TokenService;
-import dev.vibatista.literarybookstore.repositories.cliente.ClienteRepository;
+import dev.vibatista.literarybookstore.domain.repositories.cliente.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

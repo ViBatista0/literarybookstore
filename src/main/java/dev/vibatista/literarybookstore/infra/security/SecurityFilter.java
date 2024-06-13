@@ -1,6 +1,6 @@
 package dev.vibatista.literarybookstore.infra.security;
 
-import dev.vibatista.literarybookstore.repositories.cliente.ClienteRepository;
+import dev.vibatista.literarybookstore.domain.repositories.cliente.ClienteRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
