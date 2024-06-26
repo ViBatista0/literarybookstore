@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/clientes")
@@ -49,7 +50,7 @@ public class ClienteController {
         if (clienteDTO.getId() == null)
             return ResponseEntity.badRequest().body("O id informado não pode ser vazio!");
 
-        if (!UUIDUtil.isValidUUID(clienteDTO.getId().toString()))
+        if (!UUIDUtil.isValidUUID(clienteDTO.getId()))
             return ResponseEntity.badRequest().body("O id informado não é válido!");
 
         service.delete(clienteDTO.getId());
