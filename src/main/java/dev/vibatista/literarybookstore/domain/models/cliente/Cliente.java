@@ -3,6 +3,7 @@ package dev.vibatista.literarybookstore.domain.models.cliente;
 import dev.vibatista.literarybookstore.domain.models.livro.Livro;
 import dev.vibatista.literarybookstore.domain.models.pedido.Pedido;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
@@ -34,10 +35,10 @@ public class Cliente implements UserDetails {
     @Column(name = "id", nullable = false)
     private UUID id;
 
+    @NotBlank(message = "O nome do cliente não pode ser vazio!")
     private String nome;
 
-    private String login;
-
+    @NotBlank(message = "O email do cliente não pode ser vazio!")
     private String email;
 
     private String senha;
@@ -65,6 +66,7 @@ public class Cliente implements UserDetails {
         this.email = email;
         this.senha = password;
         this.roles = role;
+        this.dataRegistro = LocalDate.now();
     }
 
     /*
