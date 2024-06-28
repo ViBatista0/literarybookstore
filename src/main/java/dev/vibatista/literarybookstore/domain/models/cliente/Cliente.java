@@ -43,6 +43,9 @@ public class Cliente implements UserDetails {
 
     private String senha;
 
+    @NotBlank(message = "O CPF deve ser informado!")
+    private String cpf;
+
     private ClienteRoles roles;
 
     private String endereco;

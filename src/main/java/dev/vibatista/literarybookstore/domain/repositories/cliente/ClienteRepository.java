@@ -13,6 +13,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, UUID> {
      * determinado atributo, e fazer essa checagem. Precisamos retornar um UserDetails, pois é a classe de manipulação
      * de auth do Spring.
      */
-    UserDetails findByEmail(String email);
+    Cliente findByEmail(String email);
 
+    Cliente findByCpf(String cpf);
 }

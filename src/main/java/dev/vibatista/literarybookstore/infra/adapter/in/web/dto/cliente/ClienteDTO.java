@@ -5,19 +5,22 @@ import dev.vibatista.literarybookstore.domain.models.cliente.ClienteRoles;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public record ClienteDTO(UUID id, String nome, String email, String senha, ClienteRoles role,
-                         String endereco, String telefone, LocalDate dataRegistro)
-{
-    public UUID getId(){
+public record ClienteDTO(UUID id, String nome, String email, String cpf, String senha, ClienteRoles role,
+                         String endereco, String telefone, LocalDate dataRegistro) {
+    public UUID getId() {
         return id;
     }
 
-    public String getNome(){
+    public String getNome() {
         return nome;
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return email;
+    }
+
+    public String getCpf() {
+        return cpf;
     }
 
 }

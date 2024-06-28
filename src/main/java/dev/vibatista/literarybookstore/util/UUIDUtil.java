@@ -11,8 +11,7 @@ public class UUIDUtil {
             return false;
 
         try{
-            String id = uuid.toString();
-            UUID idConverted = UUID.fromString(id);
+            UUID.fromString(uuid.toString());
             return true;
         }
         catch (IllegalArgumentException ex){
