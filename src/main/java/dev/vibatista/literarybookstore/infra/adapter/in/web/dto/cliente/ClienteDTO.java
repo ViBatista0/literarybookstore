@@ -23,5 +23,16 @@ public record ClienteDTO(UUID id, String nome, String email, String cpf, String 
         return cpf;
     }
 
+    public ClienteRoles getRole(){
+        return role;
+    }
+
+    public String getEndereco(){
+        return endereco;
+    }
+
+    public String getTelefone(){
+        return telefone;
+    }
 }
 

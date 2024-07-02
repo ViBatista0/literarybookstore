@@ -4,7 +4,6 @@ import dev.vibatista.literarybookstore.domain.models.cliente.Cliente;
 import dev.vibatista.literarybookstore.domain.repositories.cliente.ClienteRepository;
 import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.cliente.ClienteDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -69,6 +68,9 @@ public class ClienteService {
         cliente.setNome(dto.getNome());
         cliente.setCpf(dto.getCpf());
         cliente.setEmail(dto.getEmail());
+        cliente.setEndereco(dto.getEndereco());
+        cliente.setTelefone(dto.getTelefone());
+        cliente.setRoles(dto.getRole());
 
         return cliente;
     }
