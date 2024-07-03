@@ -2,17 +2,22 @@ package dev.vibatista.literarybookstore.domain.services.cliente;
 
 import dev.vibatista.literarybookstore.domain.models.cliente.Cliente;
 import dev.vibatista.literarybookstore.domain.repositories.cliente.ClienteRepository;
-import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.cliente.ClienteDTO;
+import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.cliente.CadastroClienteDTO;
+import dev.vibatista.literarybookstore.domain.mappers.ClienteMapper;
+import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.cliente.ListarClientesDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ClienteService {
+    @Autowired
+    private ClienteMapper clienteMapper;
+
     @Autowired
     private ClienteRepository clienteRepository;
 
@@ -20,14 +25,16 @@ public class ClienteService {
      * Cria um cliente, o repository chama o método save do JPARepository, e faz isso para os demais métodos, com
      * seus respectivos métodos.
      * */
-    public void create(ClienteDTO clienteDTO) {
-        Cliente cliente = dtoParaEntidade(clienteDTO);
-        cliente.setDataRegistro(LocalDate.now());
-        clienteRepository.save(cliente);
+    public Cliente create(CadastroClienteDTO cadastroClienteDTO) {
+        Cliente cliente = new Cliente(cadastroClienteDTO);
+        return clienteRepository.save(cliente);
     }
 
-    public List<Cliente> listarClientes() {
-        return clienteRepository.findAll();
+    public List<ListarClientesDTO> listarClientes() {
+        List<Cliente> clientes = clienteRepository.findAll();
+        return clientes.stream()
+                .map(ListarClientesDTO::fromCliente)
+                .collect(Collectors.toList());
     }
 
     // O Optional indica que pode não existir um cliente com esse ID
@@ -46,33 +53,19 @@ public class ClienteService {
         clienteRepository.deleteById(id);
     }
 
-    public Cliente editarCliente(UUID id, ClienteDTO clienteDTO) {
+    public Cliente editarCliente(UUID id, CadastroClienteDTO cadastroClienteDTO) {
         Optional<Cliente> clienteAntigo = clienteRepository.findById(id);
 
         if (clienteAntigo.isEmpty())
             return null;
 
         Cliente cliente = clienteAntigo.get();
-
-        cliente.setNome(clienteDTO.getNome());
-        cliente.setCpf(clienteDTO.getCpf());
-        cliente.setEmail(clienteDTO.getEmail());
+//        cliente.setNome(clienteDTO.getNome());
+//        cliente.setCpf(clienteDTO.getCpf());
+//        cliente.setEmail(clienteDTO.getEmail());
 
         return clienteRepository.save(cliente);
 
-    }
-
-    private Cliente dtoParaEntidade(ClienteDTO dto) {
-        Cliente cliente = new Cliente();
-        cliente.setId(dto.getId());
-        cliente.setNome(dto.getNome());
-        cliente.setCpf(dto.getCpf());
-        cliente.setEmail(dto.getEmail());
-        cliente.setEndereco(dto.getEndereco());
-        cliente.setTelefone(dto.getTelefone());
-        cliente.setRoles(dto.getRole());
-
-        return cliente;
     }
 
 }

@@ -1,9 +1,10 @@
 package dev.vibatista.literarybookstore.controllers;
 
+
 import dev.vibatista.literarybookstore.domain.models.cliente.Cliente;
 import dev.vibatista.literarybookstore.domain.services.cliente.ClienteService;
-import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.cliente.ClienteDTO;
-import dev.vibatista.literarybookstore.util.UUIDUtil;
+import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.cliente.CadastroClienteDTO;
+import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.cliente.ListarClientesDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/clientes")
@@ -27,32 +29,33 @@ public class ClienteController {
      * Retorno ResponseEntity, é para enviar cabeçalhos HTTP (200, 201, 404...).
      * */
     @PostMapping
-    public ResponseEntity<?> criarCliente(@RequestBody @Valid ClienteDTO clienteDTO) {
+    public ResponseEntity<?> criarCliente(@RequestBody @Valid CadastroClienteDTO cadastroClienteDTO) {
 
-        Cliente clienteByCpf = service.findByCpf(clienteDTO.getCpf());
-        Cliente clienteByEmail = service.findByEmail(clienteDTO.getEmail());
+        Cliente clienteByCpf = service.findByCpf(cadastroClienteDTO.getCpf());
+        Cliente clienteByEmail = service.findByEmail(cadastroClienteDTO.getEmail());
+
 
         if (clienteByCpf != null || clienteByEmail != null)
             return ResponseEntity.badRequest().body("Não pode criar dois clientes com o mesmo CPF ou email!");
 
-        if (clienteDTO.getNome() == null || clienteDTO.getNome().isEmpty())
+        if (cadastroClienteDTO.getNome() == null || cadastroClienteDTO.getNome().isEmpty())
             return ResponseEntity.badRequest().body("O nome do cliente não pode ser vazio!");
 
-        if (clienteDTO.getEmail() == null || clienteDTO.getEmail().isEmpty())
+        if (cadastroClienteDTO.getEmail() == null || cadastroClienteDTO.getEmail().isEmpty())
             return ResponseEntity.badRequest().body("O email do cliente não pode ser vazio!");
 
-        if (clienteDTO.getCpf() == null || clienteDTO.getCpf().isEmpty())
+        if (cadastroClienteDTO.getCpf() == null || cadastroClienteDTO.getCpf().isEmpty())
             return ResponseEntity.badRequest().body("O CPF do cliente não pode ser vazio!");
 
-        URI uri = URI.create("/clientes/" + clienteDTO.getId());
-        service.create(clienteDTO);
+        URI uri = URI.create("/clientes/" + cadastroClienteDTO.getId());
+        service.create(cadastroClienteDTO);
         return ResponseEntity.created(uri).build();
     }
 
     @GetMapping
-    public ResponseEntity<?> listarClientes() {
-        List<Cliente> clientes = service.listarClientes();
-        return ResponseEntity.ok().body(clientes);
+    public ResponseEntity<List<ListarClientesDTO>> listarClientes() {
+        List<ListarClientesDTO> clientesDTO = service.listarClientes();
+        return ResponseEntity.ok().body(clientesDTO);
     }
 
     @GetMapping("/{id}")
@@ -83,19 +86,19 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> editarCliente(@PathVariable String id, @RequestBody ClienteDTO clienteDTO) {
+    public ResponseEntity<?> editarCliente(@PathVariable String id, @RequestBody CadastroClienteDTO cadastroClienteDTO) {
         if (id == null || id.isEmpty())
             return ResponseEntity.badRequest().body("Informe o ID do cliente.");
 
-        if (clienteDTO == null)
+        if (cadastroClienteDTO == null)
             return ResponseEntity.badRequest().body("Informe os dados cliente.");
 
-        Optional<Cliente> cliente = service.findById(clienteDTO.getId());
+        Optional<Cliente> cliente = service.findById(cadastroClienteDTO.getId());
 
         if (cliente.isEmpty())
             return ResponseEntity.badRequest().body("Não foi encontrado nenhum cliente com esse id!");
         else {
-            service.editarCliente(UUID.fromString(id), clienteDTO);
+            service.editarCliente(UUID.fromString(id), cadastroClienteDTO);
             return ResponseEntity.ok().body("Cliente alterado com sucesso!");
         }
 
