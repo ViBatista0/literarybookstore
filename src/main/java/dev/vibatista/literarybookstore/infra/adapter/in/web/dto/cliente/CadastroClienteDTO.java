@@ -1,12 +1,10 @@
 package dev.vibatista.literarybookstore.infra.adapter.in.web.dto.cliente;
 
-import dev.vibatista.literarybookstore.domain.models.cliente.ClienteRoles;
-
 import java.time.LocalDate;
 import java.util.UUID;
 
-public record ClienteDTO(UUID id, String nome, String email, String cpf, String senha, ClienteRoles role,
-                         String endereco, String telefone, LocalDate dataRegistro) {
+public record CadastroClienteDTO(UUID id, String nome, String email, String cpf, String senha,
+                                 String endereco, String telefone, LocalDate dataRegistro) {
     public UUID getId() {
         return id;
     }
@@ -23,10 +21,6 @@ public record ClienteDTO(UUID id, String nome, String email, String cpf, String 
         return cpf;
     }
 
-    public ClienteRoles getRole(){
-        return role;
-    }
-
     public String getEndereco(){
         return endereco;
     }
@@ -34,5 +28,6 @@ public record ClienteDTO(UUID id, String nome, String email, String cpf, String 
     public String getTelefone(){
         return telefone;
     }
+
 }
 
