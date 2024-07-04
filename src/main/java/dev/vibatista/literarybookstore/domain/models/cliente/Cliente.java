@@ -72,8 +72,10 @@ public class Cliente implements UserDetails {
         this.email = cadastroClienteDTO.getEmail();
         this.senha = cadastroClienteDTO.senha();
         this.cpf = cadastroClienteDTO.getCpf();
+        this.roles = ClienteRoles.USER;
         this.endereco = cadastroClienteDTO.getEndereco();
         this.telefone = cadastroClienteDTO.getTelefone();
+        this.dataRegistro = LocalDate.now();
     }
 
 //    public Cliente(String email, String password, ClienteRoles role){

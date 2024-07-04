@@ -4,6 +4,7 @@ import dev.vibatista.literarybookstore.domain.models.cliente.Cliente;
 import dev.vibatista.literarybookstore.domain.repositories.cliente.ClienteRepository;
 import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.cliente.CadastroClienteDTO;
 import dev.vibatista.literarybookstore.domain.mappers.ClienteMapper;
+import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.cliente.EditarClienteDTO;
 import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.cliente.ListarClientesDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,27 @@ public class ClienteService {
                 .collect(Collectors.toList());
     }
 
+    public Cliente editarCliente(UUID id, EditarClienteDTO editarClienteDTO) {
+        Optional<Cliente> clienteAntigo = clienteRepository.findById(id);
+
+        if (clienteAntigo.isEmpty())
+            return null;
+
+        Cliente cliente = clienteAntigo.get();
+
+        cliente.setNome(editarClienteDTO.nome());
+        cliente.setEmail(editarClienteDTO.email());
+        cliente.setEndereco(editarClienteDTO.endereco());
+        cliente.setTelefone(editarClienteDTO.telefone());
+
+        return clienteRepository.save(cliente);
+
+    }
+
+    public void delete(UUID id) {
+        clienteRepository.deleteById(id);
+    }
+
     // O Optional indica que pode não existir um cliente com esse ID
     public Optional<Cliente> findById(UUID id) {
         return clienteRepository.findById(id);
@@ -49,23 +71,5 @@ public class ClienteService {
         return clienteRepository.findByEmail(cpf);
     }
 
-    public void delete(UUID id) {
-        clienteRepository.deleteById(id);
-    }
-
-    public Cliente editarCliente(UUID id, CadastroClienteDTO cadastroClienteDTO) {
-        Optional<Cliente> clienteAntigo = clienteRepository.findById(id);
-
-        if (clienteAntigo.isEmpty())
-            return null;
-
-        Cliente cliente = clienteAntigo.get();
-//        cliente.setNome(clienteDTO.getNome());
-//        cliente.setCpf(clienteDTO.getCpf());
-//        cliente.setEmail(clienteDTO.getEmail());
-
-        return clienteRepository.save(cliente);
-
-    }
 
 }

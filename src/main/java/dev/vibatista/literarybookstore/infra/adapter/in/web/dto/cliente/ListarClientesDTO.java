@@ -6,8 +6,15 @@ import dev.vibatista.literarybookstore.domain.models.cliente.ClienteRoles;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public record ListarClientesDTO(UUID id, String nome, String email, String cpf, ClienteRoles role,
-                                String endereco, String telefone, LocalDate dataRegistro) {
+public record ListarClientesDTO(
+        UUID id,
+        String nome,
+        String email,
+        String cpf,
+        ClienteRoles role,
+        String endereco,
+        String telefone,
+        LocalDate dataRegistro) {
 
     public static ListarClientesDTO fromCliente(Cliente cliente) {
         return new ListarClientesDTO(

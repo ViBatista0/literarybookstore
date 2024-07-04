@@ -4,6 +4,7 @@ package dev.vibatista.literarybookstore.controllers;
 import dev.vibatista.literarybookstore.domain.models.cliente.Cliente;
 import dev.vibatista.literarybookstore.domain.services.cliente.ClienteService;
 import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.cliente.CadastroClienteDTO;
+import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.cliente.EditarClienteDTO;
 import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.cliente.ListarClientesDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,19 +87,19 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> editarCliente(@PathVariable String id, @RequestBody CadastroClienteDTO cadastroClienteDTO) {
+    public ResponseEntity<?> editarCliente(@PathVariable String id, @RequestBody EditarClienteDTO editarClienteDTO) {
         if (id == null || id.isEmpty())
             return ResponseEntity.badRequest().body("Informe o ID do cliente.");
 
-        if (cadastroClienteDTO == null)
+        if (editarClienteDTO == null)
             return ResponseEntity.badRequest().body("Informe os dados cliente.");
 
-        Optional<Cliente> cliente = service.findById(cadastroClienteDTO.getId());
+        Optional<Cliente> cliente = service.findById(UUID.fromString(id));
 
         if (cliente.isEmpty())
             return ResponseEntity.badRequest().body("Não foi encontrado nenhum cliente com esse id!");
         else {
-            service.editarCliente(UUID.fromString(id), cadastroClienteDTO);
+            service.editarCliente(UUID.fromString(id), editarClienteDTO);
             return ResponseEntity.ok().body("Cliente alterado com sucesso!");
         }
 
