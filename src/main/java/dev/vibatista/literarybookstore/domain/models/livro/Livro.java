@@ -1,6 +1,8 @@
 package dev.vibatista.literarybookstore.domain.models.livro;
 
+import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.livro.CadastrarLivroDTO;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -23,11 +25,14 @@ public class Livro {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
+    @NotNull(message = "Informe o título do livro!")
     private String titulo;
 
     private String autor;
 
     private String editora;
+
+    private String descricao;
 
     private LocalDate dataPublicacao;
 
@@ -45,5 +50,19 @@ public class Livro {
     private String imagemCapa;
 
     private BigDecimal avaliacao;
+
+    public Livro(CadastrarLivroDTO cadastrarLivroDTO){
+        this.titulo = cadastrarLivroDTO.titulo();
+        this.autor = cadastrarLivroDTO.autor();
+        this.editora = cadastrarLivroDTO.editora();
+        this.descricao = cadastrarLivroDTO.descricao();
+        this.dataPublicacao = cadastrarLivroDTO.dataPublicacao();
+        this.isbn = cadastrarLivroDTO.isbn();
+        this.preco = cadastrarLivroDTO.preco();
+        this.genero = cadastrarLivroDTO.genero();
+        this.formato = cadastrarLivroDTO.formatoLivro();
+        this.qtdEstoque = cadastrarLivroDTO.qntdEstoque();
+        this.imagemCapa = cadastrarLivroDTO.imagemCapa();
+    }
 
 }

@@ -1,11 +1,13 @@
 package dev.vibatista.literarybookstore.domain.services.cliente;
 
 import dev.vibatista.literarybookstore.domain.models.cliente.Cliente;
+import dev.vibatista.literarybookstore.domain.models.livro.Livro;
 import dev.vibatista.literarybookstore.domain.repositories.cliente.ClienteRepository;
 import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.cliente.CadastroClienteDTO;
 import dev.vibatista.literarybookstore.domain.mappers.ClienteMapper;
 import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.cliente.EditarClienteDTO;
 import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.cliente.ListarClientesDTO;
+import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.livro.EditarLivroDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
