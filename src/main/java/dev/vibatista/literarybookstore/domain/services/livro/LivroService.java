@@ -45,12 +45,13 @@ public class LivroService {
 
         Livro livro = livroAntigo.get();
 
-        livro.setId(editarLivroDTO.id());
-        livro.setTitulo(editarLivroDTO.titulo());
-        livro.setAutor(editarLivroDTO.autor());
-        livro.setDataPublicacao(editarLivroDTO.dataPublicacao());
-        livro.setPreco(editarLivroDTO.preco());
-        livro.setGenero(editarLivroDTO.genero());
+        editarLivroDTO.getId().ifPresent(livro::setId);
+        editarLivroDTO.getTitulo().ifPresent(livro::setTitulo);
+        editarLivroDTO.getAutor().ifPresent(livro::setAutor);
+        editarLivroDTO.getDataPublicacao().ifPresent(livro::setDataPublicacao);
+        editarLivroDTO.getPreco().ifPresent(livro::setPreco);
+        editarLivroDTO.getGenero().ifPresent(livro::setGenero);
+
 
         return livroRepository.save(livro);
     }
