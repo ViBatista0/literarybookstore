@@ -18,7 +18,7 @@ public record ListarClientesDTO(
 
     public static ListarClientesDTO fromCliente(Cliente cliente) {
         return new ListarClientesDTO(
-                cliente.getId(),
+                cliente.getClienteId(),
                 cliente.getNome(),
                 cliente.getEmail(),
                 cliente.getCpf(),

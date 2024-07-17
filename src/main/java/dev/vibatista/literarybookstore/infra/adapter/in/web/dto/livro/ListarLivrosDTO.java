@@ -1,6 +1,5 @@
 package dev.vibatista.literarybookstore.infra.adapter.in.web.dto.livro;
 
-import dev.vibatista.literarybookstore.domain.models.cliente.Cliente;
 import dev.vibatista.literarybookstore.domain.models.livro.FormatoLivro;
 import dev.vibatista.literarybookstore.domain.models.livro.Livro;
 

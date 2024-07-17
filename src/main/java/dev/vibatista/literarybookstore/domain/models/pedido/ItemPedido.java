@@ -13,15 +13,15 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "itemId")
 @Table(name = "item_pedido")
 public class ItemPedido {
 
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "id", updatable = false, nullable = false)
-    private UUID id;
+    @Column(name = "item_id", updatable = false, nullable = false)
+    private UUID itemId;
 
     @ManyToOne
     @JoinColumn(name = "pedido_id", nullable = false)

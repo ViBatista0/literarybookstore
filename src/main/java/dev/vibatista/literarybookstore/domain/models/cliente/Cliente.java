@@ -1,5 +1,6 @@
 package dev.vibatista.literarybookstore.domain.models.cliente;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import dev.vibatista.literarybookstore.domain.models.livro.Livro;
 import dev.vibatista.literarybookstore.domain.models.pedido.Pedido;
 import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.cliente.CadastroClienteDTO;
@@ -23,7 +24,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "clienteId")
 /*
  Para classes que representam um user no bd, temos que implementar a interface UserDetails, que possui vários métodos
  de utilidade para autenticação.
@@ -33,8 +34,8 @@ public class Cliente implements UserDetails {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "id", nullable = false)
-    private UUID id;
+    @Column(name = "clienteId", nullable = false)
+    private UUID clienteId;
 
     @NotBlank(message = "O nome do cliente não pode ser vazio!")
     private String nome;
@@ -54,7 +55,8 @@ public class Cliente implements UserDetails {
     private String telefone;
 
     private LocalDate dataRegistro;
-
+    // Essa anotação vai ignorar esse lado do relacionamento na (des)serialização JSON
+    @JsonBackReference
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pedido> pedidoList;
 
@@ -67,7 +69,7 @@ public class Cliente implements UserDetails {
     private List<Livro> listaDesejos = new ArrayList<>();
 
     public Cliente(CadastroClienteDTO cadastroClienteDTO){
-        this.id = cadastroClienteDTO.getId();
+        this.clienteId = cadastroClienteDTO.getId();
         this.nome = cadastroClienteDTO.getNome();
         this.email = cadastroClienteDTO.getEmail();
         this.senha = cadastroClienteDTO.senha();
@@ -98,12 +100,12 @@ public class Cliente implements UserDetails {
             return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
-    public UUID getId() {
-        return id;
+    public UUID getClienteId() {
+        return clienteId;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setClienteId(UUID clienteId) {
+        this.clienteId = clienteId;
     }
 
     public String getNome() {

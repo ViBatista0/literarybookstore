@@ -1,6 +1,8 @@
 package dev.vibatista.literarybookstore.domain.models.pedido;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.vibatista.literarybookstore.domain.models.cliente.Cliente;
+import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.pedido.CriarPedidoDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -15,18 +17,18 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "pedidoId")
 @Table(name = "pedido")
 public class Pedido {
 
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "id", updatable = false, nullable = false)
-    private UUID id;
+    @Column(name = "pedidoId", updatable = false, nullable = false)
+    private UUID pedidoId;
 
     @ManyToOne
-    @JoinColumn(name = "cliente_id", nullable = false)
+    @JoinColumn(name = "clienteId", nullable = false)
     private Cliente cliente;
 
     private LocalDateTime dataPedido;
@@ -41,5 +43,15 @@ public class Pedido {
 
     private String enderecoEntrega;
 
-    private String metodoPagamento;
+    private MetodoPagamento metodoPagamento;
+
+    public Pedido (CriarPedidoDTO pedidoDTO){
+        this.cliente = pedidoDTO.cliente();
+        this.dataPedido = LocalDateTime.now();
+        this.statusPedido = StatusPedido.PENDENTE;
+        this.itensPedido = pedidoDTO.itemPedidoList();
+        this.valorTotal = BigDecimal.valueOf(55.63);
+        this.enderecoEntrega = pedidoDTO.enderecoEntrega();
+        this.metodoPagamento = pedidoDTO.metodoPagamento();
+    }
 }
