@@ -15,15 +15,15 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "livroId")
 @Table(name = "livro")
 public class Livro {
 
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "id", updatable = false, nullable = false)
-    private UUID id;
+    @Column(name = "livroId", updatable = false, nullable = false)
+    private UUID livroId;
 
     @NotNull(message = "Informe o título do livro!")
     private String titulo;

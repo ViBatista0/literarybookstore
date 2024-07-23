@@ -43,7 +43,7 @@ public class LivroController {
             return ResponseEntity.badRequest().body("Informe a quantidade de livros no estoque");
 
         Livro livroCriado = livroService.createLivro(cadastrarLivroDTO);
-        URI uri = URI.create("/livros/" + livroCriado.getId());
+        URI uri = URI.create("/livros/" + livroCriado.getLivroId());
         return ResponseEntity.created(uri).body(livroCriado);
     }
 

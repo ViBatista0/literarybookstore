@@ -31,7 +31,7 @@ public class PedidoController {
         } catch (EntityNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao criar pedido");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
 
     }
@@ -42,4 +42,10 @@ public class PedidoController {
 //        List<Pedido> pedidoList = service.listarPedidos();
 //        return ResponseEntity.ok().body(pedidoList);
 //    }
+
+    @GetMapping
+    public ResponseEntity<?> listarPedidos() {
+        List<Pedido> pedidoList = service.listarPedidos();
+        return ResponseEntity.ok().body(pedidoList);
+    }
 }

@@ -23,7 +23,7 @@ public record ListarLivrosDTO(
 ) {
     public static ListarLivrosDTO fromLivros(Livro livro) {
         return new ListarLivrosDTO(
-                livro.getId(),
+                livro.getLivroId(),
                 livro.getTitulo(),
                 livro.getAutor(),
                 livro.getDescricao(),

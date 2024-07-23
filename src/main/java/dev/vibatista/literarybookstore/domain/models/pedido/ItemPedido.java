@@ -1,5 +1,6 @@
 package dev.vibatista.literarybookstore.domain.models.pedido;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import dev.vibatista.literarybookstore.domain.models.livro.Livro;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,15 +21,16 @@ public class ItemPedido {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "item_id", updatable = false, nullable = false)
+    @Column(name = "itemId", updatable = false, nullable = false)
     private UUID itemId;
 
     @ManyToOne
-    @JoinColumn(name = "pedido_id", nullable = false)
+    @JoinColumn(name = "pedidoId", nullable = false)
+    @JsonBackReference
     private Pedido pedido;
 
     @ManyToOne
-    @JoinColumn(name = "livro_id", nullable = false)
+    @JoinColumn(name = "livroId", nullable = false)
     private Livro livro;
 
     private Integer quantidade;
@@ -36,5 +38,13 @@ public class ItemPedido {
     private BigDecimal precoUnitario;
 
     private BigDecimal subtotal;
+
+    public ItemPedido(Pedido pedido, Livro livro, Integer quantidade){
+        this.pedido = pedido;
+        this.livro = livro;
+        this.quantidade = quantidade;
+        this.precoUnitario = livro.getPreco();
+        this.subtotal = precoUnitario.multiply(BigDecimal.valueOf(quantidade));
+    }
 
 }

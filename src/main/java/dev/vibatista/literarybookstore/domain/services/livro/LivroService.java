@@ -1,6 +1,5 @@
 package dev.vibatista.literarybookstore.domain.services.livro;
 
-import dev.vibatista.literarybookstore.domain.models.livro.FormatoLivro;
 import dev.vibatista.literarybookstore.domain.models.livro.Livro;
 import dev.vibatista.literarybookstore.domain.repositories.livro.LivroRepository;
 import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.livro.CadastrarLivroDTO;
@@ -45,7 +44,7 @@ public class LivroService {
 
         Livro livro = livroAntigo.get();
 
-        editarLivroDTO.getId().ifPresent(livro::setId);
+        editarLivroDTO.getId().ifPresent(livro::setLivroId);
         editarLivroDTO.getTitulo().ifPresent(livro::setTitulo);
         editarLivroDTO.getAutor().ifPresent(livro::setAutor);
         editarLivroDTO.getDataPublicacao().ifPresent(livro::setDataPublicacao);
