@@ -60,14 +60,6 @@ public class Cliente implements UserDetails {
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pedido> pedidoList;
 
-    @ManyToMany
-    @JoinTable(
-            name = "cliente_livro",
-            joinColumns = @JoinColumn(name = "cliente_id"),
-            inverseJoinColumns = @JoinColumn(name = "livro_id")
-    )
-    private List<Livro> listaDesejos = new ArrayList<>();
-
     public Cliente(CadastroClienteDTO cadastroClienteDTO){
         this.clienteId = cadastroClienteDTO.getId();
         this.nome = cadastroClienteDTO.getNome();
@@ -98,94 +90,6 @@ public class Cliente implements UserDetails {
             return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
         else
             return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-    }
-
-    public UUID getClienteId() {
-        return clienteId;
-    }
-
-    public void setClienteId(UUID clienteId) {
-        this.clienteId = clienteId;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public ClienteRoles getRoles() {
-        return roles;
-    }
-
-    public void setRoles(ClienteRoles roles) {
-        this.roles = roles;
-    }
-
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
-    public LocalDate getDataRegistro() {
-        return dataRegistro;
-    }
-
-    public void setDataRegistro(LocalDate dataRegistro) {
-        this.dataRegistro = dataRegistro;
-    }
-
-    public List<Pedido> getPedidoList() {
-        return pedidoList;
-    }
-
-    public void setPedidoList(List<Pedido> pedidoList) {
-        this.pedidoList = pedidoList;
-    }
-
-    public List<Livro> getListaDesejos() {
-        return listaDesejos;
-    }
-
-    public void setListaDesejos(List<Livro> listaDesejos) {
-        this.listaDesejos = listaDesejos;
     }
 
     @Override
