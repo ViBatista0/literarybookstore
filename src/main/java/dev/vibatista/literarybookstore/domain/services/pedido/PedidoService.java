@@ -61,8 +61,13 @@ public class PedidoService {
 
 
     private List<ItemPedido> criarItensPedido(CriarPedidoDTO criarPedidoDTO, Pedido pedido) {
+        List<ItemPedidoDTO> itens = criarPedidoDTO.itensPedido();
+
         return criarPedidoDTO.itensPedido().stream()
                 .map(itemPedidoDTO -> {
+                    if (itemPedidoDTO.quantidade() < 1){
+                        throw new IllegalArgumentException("O número mínimo de livros para realizar um pedido é 1!");
+                    }
                     Livro livro = livroRepository.findById(itemPedidoDTO.livroId())
                             .orElseThrow(() -> new EntityNotFoundException("Livro não encontrado!"));
                     return new ItemPedido(pedido, livro, itemPedidoDTO.quantidade());
