@@ -16,9 +16,7 @@ public record ListarLivrosDTO(
         BigDecimal preco,
         String genero,
         FormatoLivro formato,
-        Integer qntdEstoque,
-        BigDecimal avaliacao
-
+        Integer qntdEstoque
 
 ) {
     public static ListarLivrosDTO fromLivros(Livro livro) {
@@ -32,8 +30,7 @@ public record ListarLivrosDTO(
                 livro.getPreco(),
                 livro.getGenero(),
                 livro.getFormato(),
-                livro.getQtdEstoque(),
-                livro.getAvaliacao()
+                livro.getQtdEstoque()
         );
     }
 }

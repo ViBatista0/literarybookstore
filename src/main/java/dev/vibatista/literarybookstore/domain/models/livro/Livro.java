@@ -47,10 +47,6 @@ public class Livro {
 
     private Integer qtdEstoque;
 
-    private String imagemCapa;
-
-    private BigDecimal avaliacao;
-
     public Livro(CadastrarLivroDTO cadastrarLivroDTO){
         this.titulo = cadastrarLivroDTO.titulo();
         this.autor = cadastrarLivroDTO.autor();
@@ -62,7 +58,6 @@ public class Livro {
         this.genero = cadastrarLivroDTO.genero();
         this.formato = cadastrarLivroDTO.formatoLivro();
         this.qtdEstoque = cadastrarLivroDTO.qntdEstoque();
-        this.imagemCapa = cadastrarLivroDTO.imagemCapa();
     }
 
 }
