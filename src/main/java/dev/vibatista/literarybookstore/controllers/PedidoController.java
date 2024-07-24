@@ -48,4 +48,10 @@ public class PedidoController {
         List<Pedido> pedidoList = service.listarPedidosByCliente(clienteId);
         return ResponseEntity.ok().body(pedidoList);
     }
+
+    @PatchMapping("/cancelar/{id}")
+    public ResponseEntity<?> cancelarPedido(@PathVariable String id){
+        Pedido pedido = service.cancelarPedido(id);
+        return ResponseEntity.ok().body(pedido);
+    }
 }

@@ -90,4 +90,15 @@ public class PedidoService {
         return pedidoRepository.findByClienteId(clienteId);
     }
 
+    public Pedido cancelarPedido(String pedidoId){
+        Optional<Pedido> pedido = pedidoRepository.findById(UUID.fromString(pedidoId));
+
+        if (pedido.isEmpty())
+            throw new NullPointerException("Não foi encontrado nenhum pedido com esse id!");
+
+        pedido.get().setStatusPedido(StatusPedido.CANCELADO);
+
+        return pedidoRepository.save(pedido.get());
+    }
+
 }
