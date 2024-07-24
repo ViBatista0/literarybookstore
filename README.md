@@ -13,3 +13,4 @@ Este projeto é uma aplicação back end web para a gestão de uma biblioteca on
 - **H2 Database (para desenvolvimento e testes)**
 - **Spring Security (para autenticação e autorização)**
 - **Spring Data JPA (para persistência de dados)**
+- Postman para testar os endpoints
