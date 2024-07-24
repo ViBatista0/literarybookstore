@@ -22,7 +22,7 @@ public class PedidoController {
     private PedidoService service;
 
     @PostMapping
-    public ResponseEntity<?> criarPedido(@RequestBody @Valid CriarPedidoDTO pedidoDTO) {
+    public ResponseEntity<?> criarPedido(@Valid @RequestBody CriarPedidoDTO pedidoDTO) {
         try {
             Pedido pedido = service.criarPedido(pedidoDTO);
             URI uri = URI.create("/pedido/" + pedido.getPedidoId());
@@ -36,16 +36,16 @@ public class PedidoController {
 
     }
 
-//    @GetMapping
-//    public ResponseEntity<?> listarPedidos(@PathVariable UUID clienteId){
-//        Cliente cliente = service
-//        List<Pedido> pedidoList = service.listarPedidos();
-//        return ResponseEntity.ok().body(pedidoList);
-//    }
-
     @GetMapping
     public ResponseEntity<?> listarPedidos() {
         List<Pedido> pedidoList = service.listarPedidos();
+        return ResponseEntity.ok().body(pedidoList);
+    }
+
+    @GetMapping("cliente/{id}")
+    public ResponseEntity<?> listarPedidos(@PathVariable String id) {
+        UUID clienteId = UUID.fromString(id);
+        List<Pedido> pedidoList = service.listarPedidosByCliente(clienteId);
         return ResponseEntity.ok().body(pedidoList);
     }
 }

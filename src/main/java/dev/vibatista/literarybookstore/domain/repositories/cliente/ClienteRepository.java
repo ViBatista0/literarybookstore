@@ -16,4 +16,5 @@ public interface ClienteRepository extends JpaRepository<Cliente, UUID> {
     Cliente findByEmail(String email);
 
     Cliente findByCpf(String cpf);
+
 }

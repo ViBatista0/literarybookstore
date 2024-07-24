@@ -73,16 +73,16 @@ public class PedidoService {
         return itensPedido.stream().
                 map(ItemPedido::getSubtotal).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
-    // O pedido tem que ser listado pelo cliente, não faz sentido eu listar todos os pedidos existentes,
-    // se centenas de clientes fizessem vários pedidos, seria burrice listar todos.
-//    public List<Pedido> listarPedidos(Cliente cliente){
-//        UUID clienteId = cliente.getClienteId();
-//        clienteRepository.findById(clienteId);
-//
-//    }
 
+    // Apenas para teste
     public List<Pedido> listarPedidos() {
         return pedidoRepository.findAll();
+    }
+
+    // O pedido tem que ser listado pelo cliente, não faz sentido eu listar todos os pedidos existentes,
+    // se centenas de clientes fizessem vários pedidos, seria burrice listar todos.
+    public List<Pedido> listarPedidosByCliente(UUID clienteId) {
+        return pedidoRepository.findByClienteId(clienteId);
     }
 
 }
