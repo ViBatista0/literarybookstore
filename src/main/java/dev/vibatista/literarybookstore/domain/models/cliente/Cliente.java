@@ -61,10 +61,8 @@ public class Cliente implements UserDetails {
     private List<Pedido> pedidoList;
 
     public Cliente(CadastroClienteDTO cadastroClienteDTO){
-        this.clienteId = cadastroClienteDTO.getId();
         this.nome = cadastroClienteDTO.getNome();
         this.email = cadastroClienteDTO.getEmail();
-        this.senha = cadastroClienteDTO.senha();
         this.cpf = cadastroClienteDTO.getCpf();
         this.roles = ClienteRoles.USER;
         this.endereco = cadastroClienteDTO.getEndereco();

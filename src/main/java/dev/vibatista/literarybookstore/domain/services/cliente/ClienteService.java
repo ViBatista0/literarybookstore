@@ -1,13 +1,11 @@
 package dev.vibatista.literarybookstore.domain.services.cliente;
 
 import dev.vibatista.literarybookstore.domain.models.cliente.Cliente;
-import dev.vibatista.literarybookstore.domain.models.livro.Livro;
 import dev.vibatista.literarybookstore.domain.repositories.cliente.ClienteRepository;
 import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.cliente.CadastroClienteDTO;
 import dev.vibatista.literarybookstore.domain.mappers.ClienteMapper;
 import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.cliente.EditarClienteDTO;
 import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.cliente.ListarClientesDTO;
-import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.livro.EditarLivroDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +26,14 @@ public class ClienteService {
      * Cria um cliente, o repository chama o método save do JPARepository, e faz isso para os demais métodos, com
      * seus respectivos métodos.
      * */
-    public Cliente create(CadastroClienteDTO cadastroClienteDTO) {
+    public Cliente criarCliente(CadastroClienteDTO cadastroClienteDTO) {
+
+        Cliente clienteByEmail = clienteRepository.findByEmail(cadastroClienteDTO.getEmail());
+        Cliente clienteByCPF = clienteRepository.findByCpf(cadastroClienteDTO.getCpf());
+
+        if (clienteByEmail != null || clienteByCPF != null)
+            throw new IllegalArgumentException("Já existe um cliente cadastrado com essas informações!");
+
         Cliente cliente = new Cliente(cadastroClienteDTO);
         return clienteRepository.save(cliente);
     }
@@ -69,6 +74,7 @@ public class ClienteService {
     public Cliente findByCpf(String cpf) {
         return clienteRepository.findByCpf(cpf);
     }
+
     public Cliente findByEmail(String cpf) {
         return clienteRepository.findByEmail(cpf);
     }

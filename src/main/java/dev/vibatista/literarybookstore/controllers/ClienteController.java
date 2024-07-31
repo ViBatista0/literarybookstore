@@ -16,7 +16,6 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/clientes")
@@ -30,27 +29,16 @@ public class ClienteController {
      * Retorno ResponseEntity, é para enviar cabeçalhos HTTP (200, 201, 404...).
      * */
     @PostMapping
-    public ResponseEntity<?> criarCliente(@RequestBody @Valid CadastroClienteDTO cadastroClienteDTO) {
+    public ResponseEntity<?> criarCliente(@Valid @RequestBody CadastroClienteDTO cadastroClienteDTO) {
+        try{
+            Cliente cliente = service.criarCliente(cadastroClienteDTO);
+            URI uri = URI.create("/clientes/" + cliente.getClienteId());
+            return ResponseEntity.created(uri).body(cliente);
+        }
+        catch (Exception ex){
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
 
-        Cliente clienteByCpf = service.findByCpf(cadastroClienteDTO.getCpf());
-        Cliente clienteByEmail = service.findByEmail(cadastroClienteDTO.getEmail());
-
-
-        if (clienteByCpf != null || clienteByEmail != null)
-            return ResponseEntity.badRequest().body("Não pode criar dois clientes com o mesmo CPF ou email!");
-
-        if (cadastroClienteDTO.getNome() == null || cadastroClienteDTO.getNome().isEmpty())
-            return ResponseEntity.badRequest().body("O nome do cliente não pode ser vazio!");
-
-        if (cadastroClienteDTO.getEmail() == null || cadastroClienteDTO.getEmail().isEmpty())
-            return ResponseEntity.badRequest().body("O email do cliente não pode ser vazio!");
-
-        if (cadastroClienteDTO.getCpf() == null || cadastroClienteDTO.getCpf().isEmpty())
-            return ResponseEntity.badRequest().body("O CPF do cliente não pode ser vazio!");
-
-        URI uri = URI.create("/clientes/" + cadastroClienteDTO.getId());
-        service.create(cadastroClienteDTO);
-        return ResponseEntity.created(uri).build();
     }
 
     @GetMapping

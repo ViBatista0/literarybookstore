@@ -1,21 +1,22 @@
 package dev.vibatista.literarybookstore.infra.adapter.in.web.dto.cliente;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 import java.util.UUID;
 
 public record CadastroClienteDTO(
-        UUID id,
+        @NotNull(message = "O nome não pode ser vazio!")
         String nome,
+        @NotNull(message = "O email não pode ser vazio!")
         String email,
+        @NotNull(message = "O CPF não pode ser vazio!")
         String cpf,
-        String senha,
+        @NotBlank(message = "O endereço não pode ser vazio!")
         String endereco,
-        String telefone,
-        LocalDate dataRegistro) {
+        String telefone) {
 
-    public UUID getId() {
-        return id;
-    }
 
     public String getNome() {
         return nome;
@@ -29,11 +30,11 @@ public record CadastroClienteDTO(
         return cpf;
     }
 
-    public String getEndereco(){
+    public String getEndereco() {
         return endereco;
     }
 
-    public String getTelefone(){
+    public String getTelefone() {
         return telefone;
     }
 
