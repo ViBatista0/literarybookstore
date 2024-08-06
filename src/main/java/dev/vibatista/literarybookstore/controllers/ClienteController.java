@@ -30,15 +30,13 @@ public class ClienteController {
      * */
     @PostMapping
     public ResponseEntity<?> criarCliente(@Valid @RequestBody CadastroClienteDTO cadastroClienteDTO) {
-        try{
+        try {
             Cliente cliente = service.criarCliente(cadastroClienteDTO);
             URI uri = URI.create("/clientes/" + cliente.getClienteId());
             return ResponseEntity.created(uri).body(cliente);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
-
     }
 
     @GetMapping
@@ -49,22 +47,16 @@ public class ClienteController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable String id) {
-        Optional<Cliente> cliente = service.findById(UUID.fromString(id));
-
-        if (cliente.isEmpty())
+        try {
+            Optional<Cliente> cliente = service.findById(UUID.fromString(id));
+            return ResponseEntity.ok().body(cliente);
+        } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum cliente com esse id!");
-
-        return ResponseEntity.ok().body(cliente);
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletarCliente(@PathVariable UUID id) {
-
-        Optional<Cliente> cliente = service.findById(id);
-
-        if (cliente.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado.");
-
         try {
             service.delete(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -76,19 +68,12 @@ public class ClienteController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> editarCliente(@PathVariable String id, @RequestBody EditarClienteDTO editarClienteDTO) {
-        if (id == null || id.isEmpty())
-            return ResponseEntity.badRequest().body("Informe o ID do cliente.");
-
-        if (editarClienteDTO == null)
-            return ResponseEntity.badRequest().body("Informe os dados cliente.");
-
-        Optional<Cliente> cliente = service.findById(UUID.fromString(id));
-
-        if (cliente.isEmpty())
-            return ResponseEntity.badRequest().body("Não foi encontrado nenhum cliente com esse id!");
-        else {
-            service.editarCliente(UUID.fromString(id), editarClienteDTO);
-            return ResponseEntity.ok().body("Cliente alterado com sucesso!");
+        try {
+            Cliente cliente = service.editarCliente(UUID.fromString(id), editarClienteDTO);
+            return ResponseEntity.ok().body(cliente);
+        }
+        catch (Exception ex){
+            return ResponseEntity.badRequest().body("Erro ao editar o cliente: " + ex.getMessage());
         }
 
     }

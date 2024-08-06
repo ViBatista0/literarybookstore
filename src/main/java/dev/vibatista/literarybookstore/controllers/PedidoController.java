@@ -51,7 +51,13 @@ public class PedidoController {
 
     @PatchMapping("/cancelar/{id}")
     public ResponseEntity<?> cancelarPedido(@PathVariable String id){
-        Pedido pedido = service.cancelarPedido(id);
-        return ResponseEntity.ok().body(pedido);
+        try{
+            Pedido pedido = service.cancelarPedido(id);
+            return ResponseEntity.ok().body(pedido);
+        }
+        catch (Exception ex){
+            return ResponseEntity.badRequest().body("Erro ao cancelar pedido: " + ex.getMessage());
+        }
+
     }
 }

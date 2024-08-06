@@ -7,6 +7,8 @@ import dev.vibatista.literarybookstore.domain.mappers.ClienteMapper;
 import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.cliente.EditarClienteDTO;
 import dev.vibatista.literarybookstore.infra.adapter.in.web.dto.cliente.ListarClientesDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,29 +48,36 @@ public class ClienteService {
     }
 
     public Cliente editarCliente(UUID id, EditarClienteDTO editarClienteDTO) {
-        Optional<Cliente> clienteAntigo = clienteRepository.findById(id);
-
-        if (clienteAntigo.isEmpty())
-            return null;
+        Optional<Cliente> clienteAntigo = Optional.ofNullable(clienteRepository.findById(id)
+                .orElseThrow(() -> new NullPointerException("Nenhum cliente encontrado com esse id!")));
 
         Cliente cliente = clienteAntigo.get();
 
-        cliente.setNome(editarClienteDTO.nome());
-        cliente.setEmail(editarClienteDTO.email());
-        cliente.setEndereco(editarClienteDTO.endereco());
-        cliente.setTelefone(editarClienteDTO.telefone());
+        cliente.setNome(Optional.ofNullable(editarClienteDTO.nome()).orElse(cliente.getNome()));
+        cliente.setEmail(Optional.ofNullable(editarClienteDTO.email()).orElse(cliente.getEmail()));
+        cliente.setEndereco(Optional.ofNullable(editarClienteDTO.endereco()).orElse(cliente.getEndereco()));
+        cliente.setTelefone(Optional.ofNullable(editarClienteDTO.telefone()).orElse(cliente.getTelefone()));
 
         return clienteRepository.save(cliente);
 
     }
 
     public void delete(UUID id) {
+
+        Optional<Cliente> cliente = clienteRepository.findById(id);
+
+        if (cliente.isEmpty())
+            throw new NullPointerException("Cliente não encontrado.");
+
         clienteRepository.deleteById(id);
     }
 
     // O Optional indica que pode não existir um cliente com esse ID
     public Optional<Cliente> findById(UUID id) {
-        return clienteRepository.findById(id);
+        Optional<Cliente> cliente = clienteRepository.findById(id);
+        if (cliente.isEmpty()) throw new NullPointerException("Não foi encontrado nenhum cliente com esse id!");
+
+        return cliente;
     }
 
     public Cliente findByCpf(String cpf) {

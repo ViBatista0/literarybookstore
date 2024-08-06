@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -65,11 +66,15 @@ public class PedidoService {
 
         return criarPedidoDTO.itensPedido().stream()
                 .map(itemPedidoDTO -> {
-                    if (itemPedidoDTO.quantidade() < 1){
+                    if (itemPedidoDTO.quantidade() < 1) {
                         throw new IllegalArgumentException("O número mínimo de livros para realizar um pedido é 1!");
                     }
+
+                    subtrairLivros(itemPedidoDTO.livroId(), itemPedidoDTO.quantidade());
+
                     Livro livro = livroRepository.findById(itemPedidoDTO.livroId())
                             .orElseThrow(() -> new EntityNotFoundException("Livro não encontrado!"));
+
                     return new ItemPedido(pedido, livro, itemPedidoDTO.quantidade());
                 }).collect(Collectors.toList());
     }
@@ -90,15 +95,46 @@ public class PedidoService {
         return pedidoRepository.findByClienteId(clienteId);
     }
 
-    public Pedido cancelarPedido(String pedidoId){
+    public Pedido cancelarPedido(String pedidoId) {
         Optional<Pedido> pedido = pedidoRepository.findById(UUID.fromString(pedidoId));
 
         if (pedido.isEmpty())
             throw new NullPointerException("Não foi encontrado nenhum pedido com esse id!");
 
+        if (pedido.get().getStatusPedido() != StatusPedido.PENDENTE)
+            throw new IllegalArgumentException("O pedido só pode ser cancelado caso o status esteja PENDENTE!");
+
         pedido.get().setStatusPedido(StatusPedido.CANCELADO);
 
+        List<?> livrosId =
+        pedido.get().getItensPedido().stream().map(itemPedido -> {
+            return itemPedido.getLivro().getLivroId();
+        }).toList();
+
         return pedidoRepository.save(pedido.get());
+    }
+
+    private void subtrairLivros(UUID livroId, Integer livrosComprados) {
+        Optional<Livro> livro = livroRepository.findById(livroId);
+
+        if (livro.isEmpty())
+            throw new NullPointerException("Não foi encontrado nenhum livro com o ID informado!");
+
+        Livro livroExists = livro.get();
+
+        if (livroExists.getQtdEstoque() < livrosComprados)
+            throw new IllegalArgumentException("Não é possível comprar uma quantidade maior do que o estoque disponível: "
+                    + livroExists.getQtdEstoque());
+
+        livroExists.setQtdEstoque(livroExists.getQtdEstoque() - livrosComprados);
+
+        livroRepository.save(livroExists);
+    }
+
+    private void devolverLivros(List<?> livrosId) {
+
+        List<Livro> livros = new ArrayList<>();
+
     }
 
 }
