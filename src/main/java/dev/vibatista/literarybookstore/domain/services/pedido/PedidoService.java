@@ -96,22 +96,22 @@ public class PedidoService {
     }
 
     public Pedido cancelarPedido(String pedidoId) {
-        Optional<Pedido> pedido = pedidoRepository.findById(UUID.fromString(pedidoId));
+        Optional<Pedido> opPedido = pedidoRepository.findById(UUID.fromString(pedidoId));
 
-        if (pedido.isEmpty())
+        if (opPedido.isEmpty())
             throw new NullPointerException("Não foi encontrado nenhum pedido com esse id!");
 
-        if (pedido.get().getStatusPedido() != StatusPedido.PENDENTE)
+        Pedido pedido = opPedido.get();
+
+
+        if (pedido.getStatusPedido() != StatusPedido.PENDENTE)
             throw new IllegalArgumentException("O pedido só pode ser cancelado caso o status esteja PENDENTE!");
 
-        pedido.get().setStatusPedido(StatusPedido.CANCELADO);
+        pedido.setStatusPedido(StatusPedido.CANCELADO);
 
-        List<?> livrosId =
-        pedido.get().getItensPedido().stream().map(itemPedido -> {
-            return itemPedido.getLivro().getLivroId();
-        }).toList();
+        devolverLivros(pedido.getItensPedido());
 
-        return pedidoRepository.save(pedido.get());
+        return pedidoRepository.save(pedido);
     }
 
     private void subtrairLivros(UUID livroId, Integer livrosComprados) {
@@ -131,9 +131,14 @@ public class PedidoService {
         livroRepository.save(livroExists);
     }
 
-    private void devolverLivros(List<?> livrosId) {
+    private void devolverLivros(List<ItemPedido> itensPedido) {
 
-        List<Livro> livros = new ArrayList<>();
+        for (ItemPedido itemPedido : itensPedido) {
+            Livro livro = itemPedido.getLivro();
+            livro.setQtdEstoque(livro.getQtdEstoque() + itemPedido.getQuantidade());
+
+            livroRepository.save(livro);
+        }
 
     }
 
